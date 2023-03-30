@@ -6,4 +6,4 @@
 > jar cf wc.jar *.class
 > hadoop jar wc.jar WordCount /input /output
 > hadoop fs -copyToLocal /output output
-> hadoop fs -rmr /output
+> hadoop fs -rm -r /output
