@@ -43,14 +43,6 @@ public class WeatherData {
     }
   }
 
-  public static class MaxTemperatureReducer extends MapReduceBase implements Reducer<Text, Text, Text, Text> {
-    @Override
-    public void reduce(Text Key, Iterator<Text> Values, OutputCollector<Text, Text> output, Reporter arg3)
-        throws IOException {
-      String temperature = Values.next().toString();
-      output.collect(Key, new Text(temperature));
-    }
-  }
 
   public static void main(String[] args) throws Exception {
     JobConf conf = new JobConf(WeatherData.class);
@@ -60,7 +52,7 @@ public class WeatherData {
     conf.setMapOutputKeyClass(Text.class);
     conf.setMapOutputValueClass(Text.class);
     conf.setMapperClass(MaxTemperatureMapper.class);
-    conf.setReducerClass(MaxTemperatureReducer.class);
+    
     conf.setInputFormat(TextInputFormat.class);
     conf.setOutputFormat(TextOutputFormat.class);
     FileInputFormat.setInputPaths(conf, new Path(args[0]));
