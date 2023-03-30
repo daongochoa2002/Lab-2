@@ -30,7 +30,7 @@ Mapper: get the pair of a node with its neighbour node.
 input: <offset, line>
 output: <node, neigbour_node>
 
-Reducer: find the total length of call of each user, then finding potential clients by having more than 60 mins duration.
+Reducer: combine all neigbours to one list
 input: <node, neigbour_node1, neigbour_node2, ...>
 output: <node, all_neigbour_node>
 
