@@ -7,16 +7,27 @@ Let’s understand the problem through a subset of temperature records as shown 
 *Input*
 
 > 1900 36
+
 > 1900 29
+
 > 1901 32
+
 > 1901 40
+
 > 1901 29
+
 > 1901 48
+
 > 1901 16
+
 > 1901 21
+
 > 1901 6
+
 > 1901 22
+
 > 1902 49
+
 > 1902 49
 
 In this data set, the first field represents the year and the second field represents the temperature in that year. The target is to find the maximum temperature for each year.
@@ -24,7 +35,9 @@ In this data set, the first field represents the year and the second field repre
 *Output*
 
 > 1900 36
+
 > 1901 48
+
 > 1902 49
 
 **Solution**
@@ -42,3 +55,17 @@ output: <year, temperature>
 Reducer: find the maximum temperature for each year.
 input: <year, (temperature_1, temperature_2, ...)>
 output: <year, max_temperature>
+
+**Commandline**
+
+> hdfs dfs -mkdir /input
+
+> hdfs dfs -put ./input/* /input
+
+> hadoop com.sun.tools.javac.Main *.java
+
+> jar cf mt.jar *.class
+
+> hadoop jar mt.jar MaxTemp /input /output
+
+> hadoop fs -copyToLocal /output output

@@ -14,52 +14,58 @@ import java.util.HashSet;
 
 public class MusicTrack {
 
-    public static class UniqueListenersMapper 
-        extends Mapper< Object , Text, IntWritable, IntWritable > {
+    public static class MusicTrackMapper 
+        extends Mapper< Object , Text, IntWritable, Text> {
 
         private static IntWritable trackId = new IntWritable();
-        private static IntWritable userId = new IntWritable();
+        private static Text data = new Text();
 
         public void map(Object key, Text value, Context context)
             throws IOException, InterruptedException {
 
-            StringTokenizer itr = new StringTokenizer(value.toString(),"|");
+            String[] parts = value.toString().split("[|]");
 
-            while (itr.hasMoreTokens()) {
-                userId.set(Integer.parseInt(itr.nextToken().trim()));
-                trackId.set(Integer.parseInt(itr.nextToken().trim()));
-                context.write(trackId, userId);
-                break;
-            }
+            trackId.set(Integer.parseInt(parts[0]));
+            data.set(parts[1]+" "+parts[2]+" "+parts[3]+" "+parts[4]);
+            context.write(trackId, data);
         }
     }
     
 
-    public static class UniqueListenersReducer 
-        extends Reducer< IntWritable , IntWritable, IntWritable, IntWritable> {
+    public static class MusicTrackReducer 
+        extends Reducer< IntWritable , Text, IntWritable, Text> {
 
-            private IntWritable result = new IntWritable();
+            private Text result = new Text();
 
-        public void reduce(IntWritable key, Iterable<IntWritable> values, Context context)
+        public void reduce(IntWritable key, Iterable<Text> values, Context context)
             throws IOException, InterruptedException {
 
-            HashSet<IntWritable> set = new HashSet<>();
-            for (IntWritable val : values) {
-                set.add(val);
+            HashSet<String> uniqueListeners = new HashSet<>();
+            int SharedCount =  0;
+            int RadioCount =  0;
+            int SkipCount =  0;
+            for (Text val : values) {
+                StringTokenizer itr = new StringTokenizer(val.toString());
+                uniqueListeners.add(itr.nextToken());
+                SharedCount += Integer.parseInt(itr.nextToken());
+                RadioCount += Integer.parseInt(itr.nextToken());
+                SkipCount += Integer.parseInt(itr.nextToken());
+
+
             }
-            result.set(set.size());
+            result.set(String.valueOf(uniqueListeners.size()) +" "+ String.valueOf(SharedCount)+" "+String.valueOf(RadioCount)+" "+String.valueOf(SkipCount));
             context.write(key,result);
         }
     }
 
   public static void main(String[] args) throws Exception {
     Configuration conf = new Configuration();
-    Job job = Job.getInstance(conf, "music track");
+    Job job = Job.getInstance(conf, "MusicTrack");
     job.setJarByClass(MusicTrack.class);
-    job.setMapperClass(UniqueListenersMapper.class);
-    job.setReducerClass(UniqueListenersReducer.class);
+    job.setMapperClass(MusicTrackMapper.class);
+    job.setReducerClass(MusicTrackReducer.class);
     job.setOutputKeyClass(IntWritable.class);
-    job.setOutputValueClass(IntWritable.class);
+    job.setOutputValueClass(Text.class);
     FileInputFormat.addInputPath(job, new Path(args[0]));
     FileOutputFormat.setOutputPath(job, new Path(args[1]));
     System.exit(job.waitForCompletion(true) ? 0 : 1);
