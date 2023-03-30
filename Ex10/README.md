@@ -1,4 +1,4 @@
-# Assignment 3 - WeatherData Program
+# Assignment 10 - Count Connected Component Program
 You are given an adjacency list representation of an undirected graph. Your task is to write a MapReduce program that counts the number of connected components in the graph.
 
 **Problem statement**
