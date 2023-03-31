@@ -49,8 +49,8 @@ output: <year, max_temperature>
 
 > hadoop com.sun.tools.javac.Main *.java
 
-> jar cf sc.jar *.class
+> jar cf mt.jar *.class
 
-> hadoop jar sc.jar MusicTrack /input /output
+> hadoop jar mt.jar MusicTrack /input /output
 
 > hadoop fs -copyToLocal /output output

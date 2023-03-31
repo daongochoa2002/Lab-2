@@ -32,8 +32,8 @@ It is interesting that this program don't need reduce tasks. In this case, the i
 
 > hadoop com.sun.tools.javac.Main *.java
 
-> jar cf wcws.jar *.class
+> jar cf wd.jar *.class
 
-> hadoop jar wcws.jar WeatherData /input /output
+> hadoop jar wd.jar WeatherData /input /output
 
 > hadoop fs -copyToLocal /output output
