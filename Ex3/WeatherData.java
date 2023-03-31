@@ -32,7 +32,7 @@ public class WeatherData {
       float temp_Min = Float.parseFloat(line.substring(47, 53).trim());
       if (temp_Max > 40.0) {
         // Hot day
-        output.collect(new Text(date), new Text("Hot Day" ));
+        output.collect(new Text(date), new Text("Hot Day"));
       }
       if (temp_Min < 10) {
         // Cold day
