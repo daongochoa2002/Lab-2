@@ -32,13 +32,11 @@ public class WeatherData {
       float temp_Min = Float.parseFloat(line.substring(47, 53).trim());
       if (temp_Max > 40.0) {
         // Hot day
-        output.collect(new Text("Hot Day " + date),
-            new Text(String.valueOf(temp_Max)));
+        output.collect(new Text(date), new Text("Hot Day" ));
       }
       if (temp_Min < 10) {
         // Cold day
-        output.collect(new Text("Cold Day " + date),
-            new Text(String.valueOf(temp_Min)));
+        output.collect(new Text(date),new Text("Cold Day"));
       }
     }
   }
@@ -49,9 +47,10 @@ public class WeatherData {
     conf.setJobName("temp");
     // Note:- As Mapper's output types are not default so we have to define the
     // following properties.
+    conf.setMapperClass(MaxTemperatureMapper.class);
     conf.setMapOutputKeyClass(Text.class);
     conf.setMapOutputValueClass(Text.class);
-    conf.setMapperClass(MaxTemperatureMapper.class);
+    
     
     conf.setInputFormat(TextInputFormat.class);
     conf.setOutputFormat(TextOutputFormat.class);
